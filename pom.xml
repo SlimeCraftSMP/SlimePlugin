@@ -1,0 +1,91 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>me.phoenix</groupId>
+    <artifactId>SlimePlugin</artifactId>
+
+    <!-- Default version is UNOFFICIAL to prevent breaking auto update -->
+    <version>UNOFFICIAL</version>
+    <inceptionYear>2024</inceptionYear>
+    <packaging>jar</packaging>
+
+    <description>A Minecraft plugin template for SlimeCraftSMP plugins.</description>
+    <url>https://github.com/SlimeCraftSMP/SlimePlugin</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Java 21 (LTS) -->
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+
+        <!-- Paper properties -->
+        <paper.version>1.20.4</paper.version>
+
+        <!-- Slimefun properties -->
+        <slimefun.version>1a4011c2bd</slimefun.version>
+
+        <!-- SlimePlugin properties -->
+        <slimelib.version>370e47e74d</slimelib.version>
+    </properties>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/SlimeCraftSMP/SlimePlugin/issues</url>
+    </issueManagement>
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+
+        <repository>
+            <id>papermc-repo</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+        <defaultGoal>clean package</defaultGoal>
+        <finalName>${project.name} v${project.version}</finalName>
+
+        <resources>
+            <!-- Add all language and config files here -->
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+
+                <includes>
+                    <include>*</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>${paper.version}-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.SlimeCraftSMP</groupId>
+            <artifactId>Slimefun4</artifactId>
+            <version>${slimefun.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.SlimeCraftSMP</groupId>
+            <artifactId>SlimeLib</artifactId>
+            <version>${slimelib.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>
