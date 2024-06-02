@@ -1,14 +1,17 @@
 package me.phoenix.slimeplugin;
 
+import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import me.phoenix.slimelib.config.Config;
 import me.phoenix.slimelib.metrics.MetricsService;
 import me.phoenix.slimelib.metrics.chart.pie.SimplePie;
+import me.phoenix.slimeplugin.core.setup.PluginItemSetup;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Logger;
 
-public final class SlimePlugin extends JavaPlugin {
+public final class SlimePlugin extends JavaPlugin implements SlimefunAddon{
 
     // Important
     private static SlimePlugin instance;
@@ -30,6 +33,7 @@ public final class SlimePlugin extends JavaPlugin {
         sendStartupMessage();
         setupMetrics();
         setupEvents();
+        setupItems();
     }
 
     @Override
@@ -64,11 +68,26 @@ public final class SlimePlugin extends JavaPlugin {
         // Here
     }
 
+    private void setupItems(){
+        PluginItemSetup.setup(instance());
+    }
+
     private void cancelAllTasks(){
-        Bukkit.getScheduler().cancelTasks(instance);
+        Bukkit.getScheduler().cancelTasks(instance());
     }
 
     private void sendGoodByeMessage(){
         logo();
+    }
+
+    @NotNull
+    @Override
+    public JavaPlugin getJavaPlugin(){
+        return instance();
+    }
+
+    @Override
+    public @NotNull String getBugTrackerURL(){
+        return "https://github.com/PhoenixCodingStuff/SlimePlugin";
     }
 }
