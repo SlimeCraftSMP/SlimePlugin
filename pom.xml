@@ -25,10 +25,10 @@
         <paper.version>1.20.4</paper.version>
 
         <!-- Slimefun properties -->
-        <slimefun.version>1a4011c2bd</slimefun.version>
+        <slimefun.version>v26</slimefun.version>
 
-        <!-- SlimePlugin properties -->
-        <slimelib.version>370e47e74d</slimelib.version>
+        <!-- SlimeLib properties -->
+        <slimelib.version>v18</slimelib.version>
     </properties>
 
     <issueManagement>

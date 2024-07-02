@@ -1,45 +1,72 @@
 package me.phoenix.slimeplugin;
 
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import me.phoenix.slimelib.addon.SlimeAddon;
 import me.phoenix.slimelib.config.Config;
 import me.phoenix.slimelib.metrics.MetricsService;
 import me.phoenix.slimelib.metrics.chart.pie.SimplePie;
 import me.phoenix.slimeplugin.core.setup.PluginItemSetup;
-import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Logger;
 
-public final class SlimePlugin extends JavaPlugin implements SlimefunAddon{
+public final class SlimePlugin extends SlimeAddon implements SlimefunAddon{
 
     // Important
     private static SlimePlugin instance;
 
     // Configuration
-    private final Config config = new Config(this, "config.yml", -1);
+    private Config config;
 
-    // Service
-    private final MetricsService metrics = new MetricsService(this, 0);
+    public static SlimePlugin instance(){
+        return instance;
+    }
 
-    public SlimePlugin(){ instance = this;}
+    public static Logger logger(){
+        return instance.getLogger();
+    }
 
-    public static SlimePlugin instance(){ return instance;}
-
-    public static Logger logger(){ return instance.getLogger();}
-    
-    @Override
-    public void onEnable() {
-        sendStartupMessage();
-        setupMetrics();
-        setupEvents();
-        setupItems();
+    public static NamespacedKey key(String string){
+        return new NamespacedKey(instance, string);
     }
 
     @Override
-    public void onDisable() {
-        cancelAllTasks();
-        sendGoodByeMessage();
+    public void onPluginLoad(){
+        instance = (SlimePlugin) SlimeAddon.instance();
+    }
+
+    @Override
+    public void onPluginEnable(){
+        setupItems();
+        logo();
+    }
+
+    @Override
+    public void onPluginDisable(){
+        logo();
+    }
+
+    @Override
+    public void setupConfigs(){
+        config = new Config(instance, "config.yml");
+    }
+
+    @Override
+    public void setupMetrics(){
+        final MetricsService metrics = new MetricsService(instance, 0);
+        metrics.addCustomChart(
+                new SimplePie("auto_update",
+                        () -> config.getBoolean("options.auto-update") ? "Enabled" : "Disabled"
+                )
+        );
+    }
+
+    @Override
+    public void setupEvents(){
+        // Here
     }
 
     private void logo(){
@@ -52,42 +79,23 @@ public final class SlimePlugin extends JavaPlugin implements SlimefunAddon{
         logger().info("╚══════╝╚══════╝╚═╝╚═╝     ╚═╝╚══════╝╚═╝     ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝");
     }
 
-    private void sendStartupMessage(){
-        logo();
-    }
-
-    private void setupMetrics(){
-        metrics.addCustomChart(
-                new SimplePie("auto_update",
-                        () -> config.booleanValue("options.auto-update") ? "Enabled" : "Disabled"
-                )
-        );
-    }
-
-    private void setupEvents(){
-        // Here
+    @Override
+    public void onReload(CommandSender commandSender){
+        config.reload();
     }
 
     private void setupItems(){
         PluginItemSetup.setup(instance());
     }
 
-    private void cancelAllTasks(){
-        Bukkit.getScheduler().cancelTasks(instance());
-    }
-
-    private void sendGoodByeMessage(){
-        logo();
-    }
-
     @NotNull
     @Override
     public JavaPlugin getJavaPlugin(){
-        return instance();
+        return instance;
     }
 
     @Override
-    public @NotNull String getBugTrackerURL(){
+    public String getBugTrackerURL(){
         return "https://github.com/PhoenixCodingStuff/SlimePlugin";
     }
 }

@@ -20,3 +20,4 @@ A Minecraft plugin template for SlimeCraftSMP plugins.
 - [ ] Setup classes.
 - [ ] Setup bStats.
 - [ ] Setup README.
+- [ ] Setup test server [optional]
